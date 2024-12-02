@@ -31,8 +31,10 @@ pip install -r requirements.txt
 ```bash
 python -m http.server 8000
 ```
-Access it at http://localhost:8000
-- Enter username: `user`, password: `password` to login.
+- Access it at http://localhost:8000
+- To log in, use the following credentials:
+  - username: `user`
+  - password: `password`
 ```bash
 python main.py
 ```
