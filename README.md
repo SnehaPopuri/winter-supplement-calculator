@@ -53,7 +53,8 @@ Copy the Topic id from the frontend and paste into backend system. Or for manual
   const uniqueId = crypto.randomUUID(); // Or set a custom ID
   document.getElementById('mqttTopicId').value = uniqueId;
   ```
-
+### Demo Video
+[Download Demo Video](./demo.mp4)
 
 ## Troubleshooting
 
