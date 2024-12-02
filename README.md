@@ -63,6 +63,9 @@ Copy the Topic id from the frontend and paste into backend system. Or for manual
   - Input ``BRE/calculateWinterSupplementInput/14a8301b-5999-47cf-914e-a604d82e218b``
   - Output ``BRE/calculateWinterSupplementOutput/14a8301b-5999-47cf-914e-a604d82e218b``
 
+  - The published output will be displayed on the frontend website
+
+
 ### Demo Video
 [Download Demo Video](./demo.mp4)
 
