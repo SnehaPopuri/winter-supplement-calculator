@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Winter Supplement Calculator</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mqtt/dist/mqtt.min.js"></script>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+      <a class="navbar-brand" href="#">Winter Supplement Calculator</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item">
+            <button class="btn btn-danger" onclick="logout()">Logout</button>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container my-5">
+    <h1>Winter Supplement Calculator</h1>
+    <form id="supplementForm">
+      <div class="mb-3">
+        <label for="children" class="form-label">Number of Children:</label>
+        <input type="number" id="children" name="children" class="form-control" min="0" required>
+      </div>
+      <div class="mb-3">
+        <label for="familyComposition" class="form-label">Family Composition:</label>
+        <select id="familyComposition" name="familyComposition" class="form-control" required>
+          <option value="single">Single</option>
+          <option value="couple">Couple</option>
+        </select>
+      </div>
+      <div class="mb-3 form-check">
+        <input type="checkbox" id="PayForDecember" name="PayForDecember" class="form-check-input" value="true">
+        <label for="PayForDecember" class="form-check-label">Family Unit in Pay for December</label>
+      </div>
+      <div class="mb-3">
+        <label for="mqttTopicId" class="form-label">MQTT Topic ID:</label>
+        <input type="text" id="mqttTopicId" class="form-control" readonly>
+      </div>
+      <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+
+    <p id="loading" style="display: none;">Waiting for results...</p>
+    <div id="result" class="mt-4" style="display: none;"></div>
+  </div>
+
+  <script>
+    // Redirect to login if not logged in
+    if (!sessionStorage.getItem('loggedIn')) {
+      window.location.href = 'login.html';
+    }
+
+    // Generate unique MQTT topic ID
+    const uniqueId = crypto.randomUUID();
+    document.getElementById('mqttTopicId').value = uniqueId;
+
+    const client = mqtt.connect('wss://test.mosquitto.org:8081', {
+      clientId: `client-${uniqueId}`,
+      clean: false,
+      reconnectPeriod: 5000
+    });
+
+    client.on('connect', function () {
+      console.log('Connected to MQTT broker');
+      const topicInput = `BRE/calculateWinterSupplementInput/${uniqueId}`;
+      const topicOutput = `BRE/calculateWinterSupplementOutput/${uniqueId}`;
+
+      client.subscribe(topicOutput, { qos: 1 });
+
+      document.getElementById('supplementForm').addEventListener('submit', function (e) {
+        e.preventDefault();
+
+        const data = {
+          id: uniqueId,
+          numberOfChildren: parseInt(document.getElementById('children').value),
+          familyComposition: document.getElementById('familyComposition').value,
+          familyUnitInPayForDecember: document.getElementById('PayForDecember').checked
+        };
+
+        document.getElementById('loading').style.display = 'block';
+        document.getElementById('result').style.display = 'none';
+
+        client.publish(topicInput, JSON.stringify(data), { qos: 1 });
+      });
+    });
+
+    client.on('message', function (topic, message) {
+      if (topic.endsWith(uniqueId)) {
+        const result = JSON.parse(message.toString());
+        document.getElementById('loading').style.display = 'none';
+        document.getElementById('result').style.display = 'block';
+        document.getElementById('result').innerHTML = `
+          <strong>Results:</strong>
+          <ul>
+            <li>Eligibility: ${result.isEligible ? 'Eligible' : 'Not Eligible'}</li>
+            <li>Base Amount: $${result.baseAmount}</li>
+            <li>Children Amount: $${result.childrenAmount}</li>
+            <li>Total Supplement Amount: $${result.supplementAmount}</li>
+          </ul>
+        `;
+      }
+    });
+
+    client.on('error', console.error);
+    client.on('close', function () {
+      console.log('Disconnected from MQTT broker');
+    });
+
+    function logout() {
+      sessionStorage.removeItem('loggedIn');
+      window.location.href = 'index.html';
+    }
+  </script>
+</body>
+</html>
