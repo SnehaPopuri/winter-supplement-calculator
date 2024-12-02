@@ -67,7 +67,7 @@ Copy the Topic id from the frontend and paste into backend system. Or for manual
 
   - The published output will be displayed on the frontend website
 
-
+### 
 ### For TEST Cases, refer this Demo Video
 [Download Demo Video](./demo.mp4)
 
@@ -82,6 +82,27 @@ Copy the Topic id from the frontend and paste into backend system. Or for manual
 - Check the browser console for errors.
 - Verify the backend is running and properly connected to the broker.
 
+## Unit Testing
+### Prerequisites for Testing
+- Install pytest: `pip install pytest`
+### Running Tests
+To run the unit tests, execute the following command from the project root:
+```bash
+pytest tests/
+```
+### Test Coverage
+Use the following command to generate a test coverage report:
+```bash
+pytest --cov=. tests/
+```
+### Test Structure
+- Tests are located in the tests/ directory
+- Each module has a corresponding test file prefixed with test_
+- Test files cover:
+  - Backend logic validation
+  - MQTT communication testing
+  - Input validation
+  - Eligibility calculation scenarios
 
 
 ## Contributing
