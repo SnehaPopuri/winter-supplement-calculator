@@ -55,9 +55,12 @@ Copy the Topic id from the frontend and paste into backend system. Or for manual
   ```
 ##You can also check the results of MQTT in cloud by setting up 
    ```javascript
-   https://testclient-cloud.mqtt.cool/
+   website: "https://testclient-cloud.mqtt.cool"
    Choose: "tcp://test.mosquitto.org:1883"
+   Enter the "SUBSCRIBER IDs".
    ```
+  Here you have two IDS: Input ``BRE/calculateWinterSupplementInput/14a8301b-5999-47cf-914e-a604d82e218b``
+    Output ``BRE/calculateWinterSupplementOutput/14a8301b-5999-47cf-914e-a604d82e218b``
 ### Demo Video
 [Download Demo Video](./demo.mp4)
 
