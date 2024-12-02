@@ -53,6 +53,11 @@ Copy the Topic id from the frontend and paste into backend system. Or for manual
   const uniqueId = crypto.randomUUID(); // Or set a custom ID
   document.getElementById('mqttTopicId').value = uniqueId;
   ```
+##You can also check the results of MQTT in cloud by setting up 
+   ```javascript
+   https://testclient-cloud.mqtt.cool/
+   Choose: "tcp://test.mosquitto.org:1883"
+   ```
 ### Demo Video
 [Download Demo Video](./demo.mp4)
 
