@@ -68,7 +68,7 @@ Copy the Topic id from the frontend and paste into backend system. Or for manual
   - The published output will be displayed on the frontend website
 
 
-### Demo Video
+### For TEST Cases, refer this Demo Video
 [Download Demo Video](./demo.mp4)
 
 ## Troubleshooting
