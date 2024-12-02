@@ -4,7 +4,7 @@ The Winter Supplement Calculator is a web-based application that calculates elig
 
 ## Features
 
-- **Frontend**: A clean web-based interface built with Bootstrap.
+- **Frontend**: A clean web-based interface.
 - **Backend**: Python-powered MQTT engine for eligibility calculations.
 - **Real-time Communication**: Communicates via MQTT for live results.
 - **Scalable**: Can be extended with additional calculations or logic.
