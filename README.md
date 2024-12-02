@@ -39,6 +39,7 @@ python main.py
 ### 4. Update the MQTT Topic ID (Local Setup)
 
 If you want to run the application on your local machine and change the MQTT topic ID:
+Copy the Topic id from the frontend and paste into backend system. Or for manual setup:
 
 - **Backend (`main.py`)**:  
   Open `main.py` and locate the following constants for the input and output topics. Change them to your desired topic IDs:
